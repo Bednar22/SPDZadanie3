@@ -38,6 +38,27 @@ void Operation::showOperation() {
 	}
 }
 
+std::tuple<int, int> Operation::findArgMin(){
+	int minVal = 1000000;
+	int minI, minJ;
+	for(int i=0; i<tasksAmount; i++){
+		for(int j=0; j<machinesAmount; j++){
+			if(Tasks[i].tasks[j] < minVal){
+				minVal= Tasks[i].tasks[j];
+				minI=i;
+				minJ=j;
+			}
+		}
+	}
+	return std::make_tuple(minI,minJ);
+}
+
+//deletes task with given index
+void Operation::removeTask(int taskIndex){
+	Tasks.erase(Tasks.begin() + taskIndex );
+	tasksAmount = tasksAmount -1;
+}
+
 void Result::Cmax(Operation data)
 {
 	int **S = new int *[data.tasksAmount];
@@ -93,3 +114,31 @@ void Result::BruteForce(Operation data)
 		{ return lhs.indeks < rhs.indeks; }));
 }
 ;
+
+void Result::Johnson(Operation data){
+	int i_star, j_star;
+	int l = 1;
+	int k = data.tasksAmount - 1;
+	Result test;
+	test.outcome = data;
+	while(data.Tasks.empty()==false){
+		//std::cout<< "POCZATEK PETLI"  << std::endl << std::endl;
+		//data.showOperation();
+		std::tie(i_star, j_star) = data.findArgMin();
+		//std::cout<< "ZALEZIONE I i J: "<< i_star << "   "<< j_star  << std::endl;
+		if(data.Tasks[i_star].tasks[0]<data.Tasks[i_star].tasks[1]){
+			//std::cout<< "SRODEK IFA"  << std::endl;
+			test.outcome.Tasks[l]=data.Tasks[i_star];
+			l=l+1;
+		} else {
+			//std::cout<< "ŚRODEK ELSA"  << std::endl;
+			test.outcome.Tasks[k] = data.Tasks[i_star];
+			//std::cout<< "PRZYPISANO WARTOSCI KOPII"  << std::endl;
+			k=k-1;
+		}
+	data.removeTask(i_star);
+	//std::cout<< "TASK USUNIETY"  << std::endl;
+	}	
+	test.Cmax(test.outcome);
+	std::cout << "Johnson algorytm CMAX: " << test.result << std::endl;
+}

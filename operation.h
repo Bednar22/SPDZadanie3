@@ -2,11 +2,13 @@
 
 
 //Libraries
+#include <climits>
 #include <vector>
 #include <tuple>
 #include <fstream>
 #include <string>
 #include <stdio.h>
+#include <tuple>
 //Files
 #include "task.h"
 
@@ -18,11 +20,15 @@ struct Operation {
 	std::vector<Task> Tasks;
 	void getDataFromFile(const std::string fileName);
 	void showOperation();
+	std::tuple<int, int> findArgMin();
+	void removeTask(int taskIndex);
 };
 
 struct Result{
 	Operation outcome;
-	int result = _MAX_INT_DIG;;
+	//int result = _MAX_INT_DIG;;
+	int result = __INT_MAX__;
 	void Cmax(Operation data);
 	void BruteForce(Operation data);
+	void Johnson(Operation data);
 };
