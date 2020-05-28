@@ -1,5 +1,9 @@
 ﻿#include <iostream>
 #include "operation.h"
+#include <ctime>
+#include "time.h"
+#include <chrono>
+
 
 
 
@@ -9,18 +13,19 @@ int main()
     
     int minI, minJ;
     Operation data, testop;
-    Result result,testres;
-    data.getDataFromFile(fileNames[0]);
+    Result result,result1;
+    data.getDataFromFile(fileNames[4]);
     data.showOperation();
+    
     std::cout << "*************************************************************" << std::endl;
-    //result.Cmax(data);
-    //NAPRAWIC JHONSONA
-    result.Johnson(data);
-    //std::cout << std::endl << result.result << std::endl;
-    //std::cout << "Bruteforce" << stSd::endl;
-    //result.BruteForce(data);
-    //result.outcome.showOperation();
-    //std::cout << std::endl << "Bruteforce Cmax:" <<result.result << std::endl;
+    result.Cmax(data);
+    result.timeJohnson(data);
+    //result1.timeBruteForce(data);
+    std::cout << std::endl << result.result << std::endl;
+    // std::cout << "Bruteforce" << std::endl;
+    // result.BruteForce(data);
+    // result.outcome.showOperation();
+    // std::cout << std::endl << "Bruteforce Cmax:" <<result.result << std::endl;
 
 
     

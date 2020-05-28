@@ -1,6 +1,4 @@
 #pragma once
-
-
 //Libraries
 #include <climits>
 #include <vector>
@@ -9,6 +7,7 @@
 #include <string>
 #include <stdio.h>
 #include <tuple>
+#include <chrono>
 //Files
 #include "task.h"
 
@@ -31,4 +30,7 @@ struct Result{
 	void Cmax(Operation data);
 	void BruteForce(Operation data);
 	void Johnson(Operation data);
+	void timeJohnson(Operation data);
+	void timeBruteForce(Operation data);
+	void timeCmax(Operation data);
 };

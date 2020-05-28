@@ -1,5 +1,35 @@
 #include "operation.h"
 
+void Result::timeJohnson(Operation data){
+	auto start = std::chrono::high_resolution_clock::now();
+	Result tmp;
+	tmp.Johnson(data);
+	auto finish = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
+	std::cout << "Czas Johnson:" << duration.count() << std::endl;
+	
+}
+
+void Result::timeCmax(Operation data){
+	auto start = std::chrono::high_resolution_clock::now();
+	Result tmp;
+	tmp.Cmax(data);
+	auto finish = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
+	std::cout << "Czas Cmax:" << duration.count() << std::endl;
+	
+}
+
+void Result::timeBruteForce(Operation data){
+	auto start = std::chrono::high_resolution_clock::now();
+	Result tmp;
+	tmp.BruteForce(data);
+	auto finish = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
+	std::cout << "Czas Brute Force:" << duration.count() << std::endl;
+	
+}
+
 
 void Operation::getDataFromFile(const std::string fileName)
 {
@@ -38,6 +68,7 @@ void Operation::showOperation() {
 	}
 }
 
+// seraches for Task with minimum value
 std::tuple<int, int> Operation::findArgMin(){
 	int minVal = 1000000;
 	int minI, minJ;
@@ -53,7 +84,6 @@ std::tuple<int, int> Operation::findArgMin(){
 	return std::make_tuple(minI,minJ);
 }
 
-//deletes task with given index
 void Operation::removeTask(int taskIndex){
 	Tasks.erase(Tasks.begin() + taskIndex );
 	tasksAmount = tasksAmount -1;
@@ -113,32 +143,25 @@ void Result::BruteForce(Operation data)
 		[](const auto& lhs, const auto& rhs)
 		{ return lhs.indeks < rhs.indeks; }));
 }
-;
 
 void Result::Johnson(Operation data){
 	int i_star, j_star;
-	int l = 1;
+	int l = 0;
 	int k = data.tasksAmount - 1;
-	Result test;
-	test.outcome = data;
+	Operation tmp=data;
+
 	while(data.Tasks.empty()==false){
-		//std::cout<< "POCZATEK PETLI"  << std::endl << std::endl;
-		//data.showOperation();
+		
 		std::tie(i_star, j_star) = data.findArgMin();
-		//std::cout<< "ZALEZIONE I i J: "<< i_star << "   "<< j_star  << std::endl;
 		if(data.Tasks[i_star].tasks[0]<data.Tasks[i_star].tasks[1]){
-			//std::cout<< "SRODEK IFA"  << std::endl;
-			test.outcome.Tasks[l]=data.Tasks[i_star];
+			tmp.Tasks[l]=data.Tasks[i_star];
 			l=l+1;
 		} else {
-			//std::cout<< "ŚRODEK ELSA"  << std::endl;
-			test.outcome.Tasks[k] = data.Tasks[i_star];
-			//std::cout<< "PRZYPISANO WARTOSCI KOPII"  << std::endl;
+			tmp.Tasks[k] = data.Tasks[i_star];
 			k=k-1;
 		}
 	data.removeTask(i_star);
-	//std::cout<< "TASK USUNIETY"  << std::endl;
 	}	
-	test.Cmax(test.outcome);
-	std::cout << "Johnson algorytm CMAX: " << test.result << std::endl;
+	Cmax(tmp);
+	std::cout << "Johnson algorytm CMAX: " << result << std::endl;
 }
