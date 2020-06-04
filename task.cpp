@@ -8,3 +8,8 @@ void Task::showTask() {
 	std::cout << std::endl;
 
 }
+
+bool Task::operator()(const Task& a, const Task& b) const
+{
+	return a.alltasks < b.alltasks;
+}

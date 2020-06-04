@@ -25,12 +25,13 @@ struct Operation {
 
 struct Result{
 	Operation outcome;
-	//int result = _MAX_INT_DIG;;
-	int result = __INT_MAX__;
+	//int result = _MAX_INT_DIG;
+	int result = INT_MAX;
 	void Cmax(Operation data);
 	void BruteForce(Operation data);
 	void Johnson(Operation data);
 	void timeJohnson(Operation data);
 	void timeBruteForce(Operation data);
 	void timeCmax(Operation data);
+	void NEH(Operation& data);
 };
