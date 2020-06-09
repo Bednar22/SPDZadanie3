@@ -1,5 +1,12 @@
 #include "operation.h"
 
+void Result::indexes() {
+	for (int i = 0; i < this->outcome.Tasks.size(); ++i)
+	{
+		std::cout << this->outcome.Tasks[i].indeks << std::endl;
+	}
+}
+
 void Result::timeJohnson(Operation data){
 	auto start = std::chrono::high_resolution_clock::now();
 	Result tmp;
@@ -28,6 +35,18 @@ void Result::timeBruteForce(Operation data){
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
 	std::cout << "Czas Brute Force:" << duration.count() << std::endl;
 	
+}
+
+void Result::timeNEH(Operation data, std::string filename) {
+	auto start = std::chrono::high_resolution_clock::now();
+	Result tmp;
+	tmp.NEH(data);
+	auto finish = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
+	//std::cout << "Czas Brute Force:" << duration.count() << std::endl;
+	std::ofstream file;
+	file.open(filename,std::fstream::app);
+	file << tmp.result << " " << duration.count()<<std::endl;
 }
 
 
@@ -207,7 +226,45 @@ void Result::Johnson(Operation data){
 	Cmax(tmp);
 	std::cout << "Johnson algorytm CMAX: " << result << std::endl;
 }
+	
+void Result::NEH(Operation& data)
+{
+	Result tmpresult;
 
+	Operation tmp1, tmp2;
+	tmp1 = data;// tmp2.Tasks.resize(tmp1.machinesAmount);
+	Task tmptask1, tmptask2;
+
+	sort(tmp1.Tasks.rbegin(), tmp1.Tasks.rend(), Task());
+
+	tmptask1 = tmp1.Tasks[0];
+	tmp2.Tasks.push_back(tmptask1);
+	tmp2.tasksAmount++;
+	tmp2.machinesAmount = tmptask1.tasks.size();
+
+	for (int k = 1; k < tmp1.tasksAmount; k++)
+	{
+		tmptask1 = tmp1.Tasks[k];
+		tmp2.Tasks.push_back(tmptask1);
+		tmp2.tasksAmount++;
+		//tmpresult.outcome = tmp2;
+		this->Cmax(tmp2);
+		this->outcome = tmp2;
+
+		for (int i = k; i > 0; i--)
+		{
+			std::swap(tmp2.Tasks[i], tmp2.Tasks[i - 1]);
+			tmpresult.Cmax(tmp2);
+			if (tmpresult.result <= this->result)
+			{
+				this->result = tmpresult.result;
+				this->outcome = tmp2;
+			}
+			//tmp2 = tmpresult.outcome;
+		}
+		tmp2 = this->outcome;
+	}
+}
 /*
 void Result::NEH(Operation& data)
 {
@@ -246,7 +303,7 @@ void Result::NEH(Operation& data)
 	}
 }
 */
-
+/*
 void Result::NEH(Operation& data)
 {
 	Result tmpresult;
@@ -285,3 +342,4 @@ void Result::NEH(Operation& data)
 		tmp2 = this->outcome;
 	}
 }
+*/

@@ -8,8 +8,10 @@
 #include <stdio.h>
 #include <tuple>
 #include <chrono>
+#include <string>
 //Files
 #include "task.h"
+
 
 
 //Operation class
@@ -33,5 +35,7 @@ struct Result{
 	void timeJohnson(Operation data);
 	void timeBruteForce(Operation data);
 	void timeCmax(Operation data);
+	void timeNEH(Operation data, std::string filename);
 	void NEH(Operation& data);
+	void indexes();
 };
